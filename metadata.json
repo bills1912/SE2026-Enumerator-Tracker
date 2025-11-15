@@ -1,0 +1,7 @@
+{
+  "name": "Field Data Collection Monitor",
+  "description": "A web dashboard for supervisors to monitor the real-time movement of field staff and track survey progress. Enumerators can use it to view their tasks and get help from an AI assistant.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
