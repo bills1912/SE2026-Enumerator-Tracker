@@ -25,6 +25,8 @@ interface SidebarProps {
   setIsCollapsed: (isCollapsed: boolean) => void;
   setSupervisorView: (view: SupervisorView) => void;
   setEnumeratorView: (view: EnumeratorView) => void;
+  activeSupervisorView: SupervisorView;
+  activeEnumeratorView: EnumeratorView;
   isMobileOpen: boolean;
   setMobileOpen: (isOpen: boolean) => void;
 }
@@ -38,6 +40,8 @@ const Sidebar: React.FC<SidebarProps> = ({
     setIsCollapsed,
     setSupervisorView,
     setEnumeratorView,
+    activeSupervisorView,
+    activeEnumeratorView,
     isMobileOpen,
     setMobileOpen
 }) => {
@@ -65,14 +69,16 @@ const Sidebar: React.FC<SidebarProps> = ({
             <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
                 {(!isCollapsed || isMobileOpen) && (
                      <div className="flex items-center gap-2">
-                        <ShieldLogoIcon className="h-8 w-8 text-blue-600"/>
+                        {/* FIX: Changed icon color to orange theme */}
+                        <ShieldLogoIcon className="h-8 w-8 text-orange-600"/>
                         <span className="font-bold text-lg">SE2026</span>
                     </div>
                 )}
                  {/* Show icon if collapsed and on desktop */}
                 {isCollapsed && !isMobileOpen && (
                     <div className="flex items-center justify-center w-full">
-                        <ShieldLogoIcon className="h-8 w-8 text-blue-600"/>
+                        {/* FIX: Changed icon color to orange theme */}
+                        <ShieldLogoIcon className="h-8 w-8 text-orange-600"/>
                     </div>
                 )}
                 {/* Desktop collapse button */}
@@ -96,14 +102,27 @@ const Sidebar: React.FC<SidebarProps> = ({
             {/* Navigation */}
             <nav className="flex-grow px-2 py-4">
                 <ul className="space-y-2">
-                    {navItems.map(item => (
-                        <li key={item.key}>
-                            <button onClick={item.action} className="w-full flex items-center p-2 text-base font-normal text-gray-900 dark:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                                <item.icon className={`h-6 w-6 text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors duration-200 ${isCollapsed && !isMobileOpen ? 'mx-auto' : ''}`} />
-                                {(!isCollapsed || isMobileOpen) && <span className="ml-3 flex-1 whitespace-nowrap">{item.label}</span>}
-                            </button>
-                        </li>
-                    ))}
+                    {navItems.map(item => {
+                        const isActive = user.role === UserRole.Supervisor
+                            ? item.key === activeSupervisorView
+                            : item.key === activeEnumeratorView;
+                        return (
+                            <li key={item.key}>
+                                <button
+                                    onClick={item.action}
+                                    className={`w-full flex items-center p-2 text-base rounded-lg group transition-colors duration-200
+                                        ${isActive
+                                            ? 'bg-orange-100 dark:bg-orange-900/50 text-gray-900 dark:text-white font-semibold'
+                                            : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+                                        }`
+                                    }
+                                >
+                                    <item.icon className={`h-6 w-6 transition-colors duration-200 ${isActive ? 'text-orange-600 dark:text-orange-400' : 'text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'} ${isCollapsed && !isMobileOpen ? 'mx-auto' : ''}`} />
+                                    {(!isCollapsed || isMobileOpen) && <span className="ml-3 flex-1 whitespace-nowrap text-left">{item.label}</span>}
+                                </button>
+                            </li>
+                        );
+                    })}
                 </ul>
             </nav>
 
@@ -112,7 +131,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                 <div className={`p-2 rounded-lg ${(!isCollapsed || isMobileOpen) ? 'bg-gray-50 dark:bg-gray-800' : ''}`}>
                     <div className="flex items-center justify-between">
                          <div className={`flex items-center ${isCollapsed && !isMobileOpen ? 'w-full justify-center' : ''}`}>
-                            <div className="flex-shrink-0 h-10 w-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-lg">
+                            {/* FIX: Changed user avatar color to orange theme */}
+                            <div className="flex-shrink-0 h-10 w-10 rounded-full bg-orange-600 flex items-center justify-center text-white font-bold text-lg">
                                 {user.name.charAt(0)}
                             </div>
                             {(!isCollapsed || isMobileOpen) && (
@@ -122,7 +142,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                                 </div>
                             )}
                         </div>
-                        {(!isCollapsed || isMobileOpen) && <ThemeSwitcher theme={theme} setTheme={setTheme} />}
+                        {(!isCollapsed || isMobileOpen) && <ThemeSwitcher theme={theme} setTheme={setTheme} direction="up" />}
                     </div>
                 </div>
 

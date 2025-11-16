@@ -24,13 +24,15 @@ const Header: React.FC<HeaderProps> = ({ user, onLogout, theme, setTheme, onTogg
         >
           <MenuIcon className="h-6 w-6" />
         </button>
-        <LocationMarkerIcon className="h-8 w-8 text-cyan-500 dark:text-cyan-400" />
+        {/* FIX: Changed icon color to orange theme */}
+        <LocationMarkerIcon className="h-8 w-8 text-orange-500 dark:text-orange-400" />
         <h1 className="text-xl font-bold text-gray-800 dark:text-white">Field Data Monitor</h1>
       </div>
       <div className="flex items-center space-x-2 md:space-x-4">
         <div className="text-right">
           <p className="font-semibold text-gray-800 dark:text-gray-100">{user.name}</p>
-          <p className="text-sm text-cyan-600 dark:text-cyan-400">{user.role}</p>
+          {/* FIX: Changed text color to orange theme */}
+          <p className="text-sm text-orange-600 dark:text-orange-400">{user.role}</p>
         </div>
         <ThemeSwitcher theme={theme} setTheme={setTheme} />
         <button

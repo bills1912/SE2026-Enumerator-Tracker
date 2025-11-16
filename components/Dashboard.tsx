@@ -159,6 +159,8 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout, theme, setTheme }
           setIsCollapsed={setIsSidebarCollapsed}
           setSupervisorView={setSupervisorView}
           setEnumeratorView={setEnumeratorView}
+          activeSupervisorView={supervisorView}
+          activeEnumeratorView={enumeratorView}
           isMobileOpen={isMobileSidebarOpen}
           setMobileOpen={setIsMobileSidebarOpen}
       />
@@ -171,7 +173,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout, theme, setTheme }
         ></div>
       )}
 
-      <div className={`flex-1 flex flex-col transition-all duration-300 ${isSidebarCollapsed ? 'md:ml-20' : 'md:ml-64'}`}>
+      <div className={`relative z-0 flex-1 flex flex-col transition-all duration-300 ${isSidebarCollapsed ? 'md:ml-20' : 'md:ml-64'}`}>
         <header className="md:hidden flex-shrink-0 sticky top-0 bg-white dark:bg-gray-900 z-30 p-2 border-b dark:border-gray-700 flex items-center">
             <button 
               onClick={() => setIsMobileSidebarOpen(true)}
@@ -181,7 +183,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout, theme, setTheme }
                 <MenuIcon className="h-6 w-6"/>
             </button>
             <div className="flex-grow text-center font-bold">
-                ASN Talent AI
+                SE2026 Monitor
             </div>
         </header>
         <main className="flex-1 flex flex-col overflow-hidden">
@@ -197,7 +199,8 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout, theme, setTheme }
         <>
             <button
             onClick={() => setIsChatOpen(!isChatOpen)}
-            className="fixed bottom-6 right-6 z-[1000] bg-blue-600 hover:bg-blue-500 text-white rounded-full p-4 shadow-lg transition-transform duration-300 ease-in-out hover:scale-110"
+            // FIX: Changed chat button color to orange theme
+            className="fixed bottom-6 right-6 z-[1000] bg-orange-600 hover:bg-orange-700 text-white rounded-full p-4 shadow-lg transition-transform duration-300 ease-in-out hover:scale-110"
             aria-label={isChatOpen ? 'Tutup obrolan' : 'Buka obrolan'}
             >
             {isChatOpen ? <CloseIcon className="h-6 w-6" /> : <ChatBubbleIcon className="h-6 w-6" />}

@@ -46,14 +46,16 @@ const Chatbot: React.FC<ChatbotProps> = ({
   const getTabClasses = (mode: ChatMode) => 
     `w-1/2 py-2 text-sm font-semibold text-center cursor-pointer transition-colors duration-200 ${
         chatMode === mode 
-        ? 'text-cyan-600 dark:text-cyan-400 border-b-2 border-cyan-500' 
+        // FIX: Changed active tab color to orange theme
+        ? 'text-orange-600 dark:text-orange-400 border-b-2 border-orange-500' 
         : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
     }`;
   
   const getMessageBubble = (msg: ChatMessage) => {
       switch (msg.role) {
           case 'user':
-              return 'bg-blue-500 text-white rounded-br-none';
+              // FIX: Changed user message bubble color to orange theme
+              return 'bg-orange-600 text-white rounded-br-none';
           case 'model':
               return 'bg-gray-100 dark:bg-gray-700 rounded-bl-none';
           case 'supervisor':
@@ -65,7 +67,8 @@ const Chatbot: React.FC<ChatbotProps> = ({
 
   const getMessageSenderIcon = (msg: ChatMessage) => {
     if (msg.role === 'model' || msg.role === 'supervisor') {
-      const bgColor = msg.role === 'model' ? 'bg-cyan-600' : 'bg-green-600';
+      // FIX: Changed AI sender icon color to orange theme
+      const bgColor = msg.role === 'model' ? 'bg-orange-600' : 'bg-green-600';
       return (
         <div className={`p-2 rounded-full ${bgColor} text-white`}>
           <UserIcon className="w-5 h-5"/>
@@ -98,7 +101,8 @@ const Chatbot: React.FC<ChatbotProps> = ({
         ))}
          {chatMode === 'ai' && isLoading && (
             <div className="flex items-start gap-2.5">
-               <div className="p-2 rounded-full bg-cyan-600 text-white"><UserIcon className="w-5 h-5"/></div>
+               {/* FIX: Changed AI sender icon color to orange theme */}
+               <div className="p-2 rounded-full bg-orange-600 text-white"><UserIcon className="w-5 h-5"/></div>
                 <div className="p-3 rounded-lg max-w-xs bg-gray-100 dark:bg-gray-700 rounded-bl-none">
                     <div className="flex items-center justify-center space-x-1">
                         <div className="w-2 h-2 bg-gray-400 dark:bg-gray-300 rounded-full animate-pulse [animation-delay:-0.3s]"></div>
@@ -118,12 +122,14 @@ const Chatbot: React.FC<ChatbotProps> = ({
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && handleSend()}
           placeholder={chatMode === 'ai' ? 'Ask the AI assistant...' : 'Chat with your supervisor...'}
-          className="flex-grow bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-l-lg p-2 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+          // FIX: Changed focus ring color to orange theme
+          className="flex-grow bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-l-lg p-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
           disabled={chatMode === 'ai' && isLoading}
         />
         <button
           onClick={handleSend}
-          className="bg-cyan-600 hover:bg-cyan-500 text-white p-2 rounded-r-lg disabled:bg-gray-500"
+          // FIX: Changed button color to orange theme
+          className="bg-orange-600 hover:bg-orange-700 text-white p-2 rounded-r-lg disabled:bg-gray-500"
           disabled={chatMode === 'ai' && isLoading}
         >
           <SendIcon className="h-6 w-6"/>

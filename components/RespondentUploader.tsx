@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback } from 'react';
 import { Enumerator, Respondent } from '../types';
 import { UploadIcon, DownloadIcon } from './Icons';
@@ -98,10 +97,12 @@ const RespondentUploader: React.FC<RespondentUploaderProps> = ({ enumerators, on
 
   return (
     <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
-      <h3 className="text-xl font-semibold mb-4 text-cyan-600 dark:text-cyan-400">Manage Respondents</h3>
+      {/* FIX: Changed heading color to orange theme */}
+      <h3 className="text-xl font-semibold mb-4 text-orange-600 dark:text-orange-400">Manage Respondents</h3>
       <div className="space-y-4">
         <div>
-          <label htmlFor="file-upload" className="relative cursor-pointer bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md font-medium text-cyan-600 dark:text-cyan-400 p-4 flex flex-col items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600">
+          {/* FIX: Changed text color to orange theme */}
+          <label htmlFor="file-upload" className="relative cursor-pointer bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md font-medium text-orange-600 dark:text-orange-400 p-4 flex flex-col items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600">
             <UploadIcon className="h-10 w-10 text-gray-400 dark:text-gray-500 mb-2"/>
             <span>{isParsing ? 'Parsing...' : 'Upload a file'}</span>
             <p className="text-xs text-gray-500 dark:text-gray-400">XLSX or CSV</p>

@@ -36,12 +36,14 @@ const SupervisorChatView: React.FC<SupervisorChatViewProps> = ({ enumerators, ch
   };
   
   const getMessageBubble = (msg: ChatMessage) => {
-    return msg.role === 'supervisor' ? 'bg-blue-500 text-white rounded-br-none' : 'bg-gray-100 dark:bg-gray-700 rounded-bl-none';
+    // FIX: Changed supervisor message bubble color to orange theme
+    return msg.role === 'supervisor' ? 'bg-orange-600 text-white rounded-br-none' : 'bg-gray-100 dark:bg-gray-700 rounded-bl-none';
   };
 
   return (
     <div className="flex flex-col h-full bg-gray-50 dark:bg-gray-800 rounded-lg">
-      <h3 className="text-xl font-semibold p-4 text-cyan-600 dark:text-cyan-400 border-b border-gray-200 dark:border-gray-700">Enumerator Chats</h3>
+      {/* FIX: Changed title color to orange theme */}
+      <h3 className="text-xl font-semibold p-4 text-orange-600 dark:text-orange-400 border-b border-gray-200 dark:border-gray-700">Enumerator Chats</h3>
       <div className="flex flex-grow overflow-hidden">
         {/* Enumerator List */}
         <div className="w-1/3 border-r border-gray-200 dark:border-gray-700 overflow-y-auto">
@@ -50,7 +52,8 @@ const SupervisorChatView: React.FC<SupervisorChatViewProps> = ({ enumerators, ch
               <li key={e.id}>
                 <button 
                   onClick={() => setSelectedEnumeratorId(e.id)}
-                  className={`w-full text-left p-3 flex items-center space-x-2 transition-colors duration-200 ${selectedEnumeratorId === e.id ? 'bg-cyan-100 dark:bg-cyan-900/50' : 'hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+                  // FIX: Changed selection color to orange theme
+                  className={`w-full text-left p-3 flex items-center space-x-2 transition-colors duration-200 ${selectedEnumeratorId === e.id ? 'bg-orange-100 dark:bg-orange-900/50' : 'hover:bg-gray-100 dark:hover:bg-gray-700'}`}
                 >
                     <UserIcon className="h-5 w-5 text-gray-500 dark:text-gray-400 flex-shrink-0"/>
                     <span className="font-medium text-gray-800 dark:text-gray-200 truncate">{e.name}</span>
@@ -85,11 +88,13 @@ const SupervisorChatView: React.FC<SupervisorChatViewProps> = ({ enumerators, ch
                   onChange={(e) => setMessage(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                   placeholder={`Reply to ${enumerators.find(e => e.id === selectedEnumeratorId)?.name || ''}...`}
-                  className="flex-grow bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-l-lg p-2 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  // FIX: Changed focus ring color to orange theme
+                  className="flex-grow bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-l-lg p-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
                 />
                 <button
                   onClick={handleSend}
-                  className="bg-cyan-600 hover:bg-cyan-500 text-white p-2 rounded-r-lg"
+                  // FIX: Changed button color to orange theme
+                  className="bg-orange-600 hover:bg-orange-700 text-white p-2 rounded-r-lg"
                 >
                   <SendIcon className="h-6 w-6"/>
                 </button>

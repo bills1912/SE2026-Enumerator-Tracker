@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ShieldLogoIcon } from './Icons';
 import ThemeSwitcher from './ThemeSwitcher';
@@ -28,7 +27,8 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onBackToLogin, theme, s
       </div>
       <div className="w-full max-w-md bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-2xl space-y-8">
         <div className="text-center">
-          <ShieldLogoIcon className="h-16 w-16 mx-auto text-blue-800 dark:text-blue-500" />
+          {/* FIX: Changed icon color to orange theme */}
+          <ShieldLogoIcon className="h-16 w-16 mx-auto text-orange-600 dark:text-orange-400" />
           <h2 className="mt-6 text-3xl font-bold text-gray-900 dark:text-gray-100">
             {submitted ? 'Periksa Email Anda' : 'Lupa Password?'}
           </h2>
@@ -51,7 +51,8 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onBackToLogin, theme, s
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                // FIX: Changed focus ring color to orange theme
+                className="block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-orange-500 focus:border-orange-500"
                 placeholder="Alamat Email"
               />
             </div>
@@ -59,7 +60,8 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onBackToLogin, theme, s
             <div>
               <button
                 type="submit"
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                // FIX: Changed button color to orange theme
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
               >
                 Kirim Tautan Reset
               </button>
@@ -70,7 +72,8 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onBackToLogin, theme, s
         <div className="text-center">
           <button
             onClick={onBackToLogin}
-            className="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300 text-sm"
+            // FIX: Changed link color to orange theme
+            className="font-medium text-orange-600 hover:text-orange-500 dark:text-orange-400 dark:hover:text-orange-300 text-sm"
           >
             &larr; Kembali ke Login
           </button>

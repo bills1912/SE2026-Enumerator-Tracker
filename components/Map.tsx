@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useRef } from 'react';
 import L, { LatLngExpression, Map, Marker } from 'leaflet';
 import { User, Respondent, Enumerator, UserRole } from '../types';
@@ -13,9 +11,10 @@ interface MapProps {
   currentUserLocation: LatLngExpression | null;
 }
 
+// FIX: Changed enumerator icon color to orange theme
 // Custom SVG icon for enumerators
 const enumeratorIcon = new L.Icon({
-    iconUrl: 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#06b6d4"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd" /></svg>'),
+    iconUrl: 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#E18939"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd" /></svg>'),
     iconSize: [32, 32],
     iconAnchor: [16, 16],
     popupAnchor: [0, -16],
@@ -84,13 +83,36 @@ const MapComponent: React.FC<MapProps> = ({ user, respondents, enumerators, curr
     if (user.role === UserRole.Supervisor) {
         enumerators.forEach(e => {
             if (e.location) {
+                 // Find respondents for this enumerator
+                const assignedRespondents = respondents.filter(r => r.enumeratorId === e.id);
+                
+                // Build the popup HTML content
+                const respondentListHtml = assignedRespondents.length > 0 
+                    ? `<ul style="list-style: disc; padding-left: 20px; margin: 0;">` + assignedRespondents.map(r => 
+                        `<li>${r.name} - <strong style="color: ${STATUS_COLORS[r.status]}">${r.status}</strong></li>`
+                      ).join('') + `</ul>`
+                    : '<p style="margin: 0;">No respondents assigned.</p>';
+
+                const popupContent = `
+                    <div style="max-height: 150px; overflow-y: auto; font-family: sans-serif; font-size: 13px;">
+                        <h4 style="font-weight: bold; margin: 0 0 4px 0; font-size: 14px;">${e.name}</h4>
+                        <p style="margin: 0 0 8px 0;">Status: <strong>${e.isMoving ? 'In Transit' : 'On-Site'}</strong></p>
+                        <hr style="margin: 4px 0; border: 0; border-top: 1px solid #ccc;">
+                        <h5 style="font-weight: bold; margin: 8px 0 4px 0;">Recent Activity:</h5>
+                        ${respondentListHtml}
+                    </div>
+                `;
+                
+                let marker: L.Marker;
                 if (markersRef.current[e.id]) {
-                    markersRef.current[e.id].setLatLng(e.location);
+                    marker = markersRef.current[e.id];
+                    marker.setLatLng(e.location);
                 } else {
-                    const marker = L.marker(e.location, { icon: enumeratorIcon }).addTo(map);
-                    marker.bindPopup(`<b>${e.name}</b><br/>${e.isMoving ? 'In Transit' : 'On-Site'}`);
+                    marker = L.marker(e.location, { icon: enumeratorIcon }).addTo(map);
                     markersRef.current[e.id] = marker;
                 }
+                // Always (re)bind the popup to ensure it's up-to-date
+                marker.bindPopup(popupContent);
             }
         });
     }

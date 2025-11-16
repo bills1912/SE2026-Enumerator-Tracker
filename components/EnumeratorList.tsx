@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Enumerator } from '../types';
 import { UserIcon } from './Icons';
@@ -18,7 +17,8 @@ const EnumeratorList: React.FC<EnumeratorListProps> = ({ enumerators }) => {
               <UserIcon className="h-6 w-6 text-gray-500 dark:text-gray-400" />
               <span className="text-gray-800 dark:text-gray-200">{e.name}</span>
             </div>
-            <span className={`text-xs font-bold px-2 py-1 rounded-full ${e.isMoving ? 'bg-blue-500 text-white animate-pulse' : 'bg-gray-500 dark:bg-gray-600 text-white dark:text-gray-300'}`}>
+            {/* FIX: Changed status badge color to orange theme */}
+            <span className={`text-xs font-bold px-2 py-1 rounded-full ${e.isMoving ? 'bg-orange-500 text-white animate-pulse' : 'bg-gray-500 dark:bg-gray-600 text-white dark:text-gray-300'}`}>
               {e.isMoving ? 'Dalam Perjalanan' : 'Di Lokasi'}
             </span>
           </li>
