@@ -6,6 +6,23 @@ interface StatsProps {
   respondents: Respondent[];
 }
 
+const StatCard: React.FC<{ title: string; value: number; colorClass: string, total: number }> = ({ title, value, colorClass, total }) => {
+    const percentage = total > 0 ? (value / total) * 100 : 0;
+    return (
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+            <div className="flex justify-between items-start">
+                <div>
+                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{title}</p>
+                    <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-1">{value}</p>
+                </div>
+                 <div className={`p-2 rounded-md ${colorClass} bg-opacity-10 text-opacity-100`}>
+                    <span className={`text-lg font-bold ${colorClass}`}>{percentage.toFixed(0)}%</span>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 const Stats: React.FC<StatsProps> = ({ respondents }) => {
   const stats = useMemo(() => {
     return respondents.reduce((acc, curr) => {
@@ -20,27 +37,14 @@ const Stats: React.FC<StatsProps> = ({ respondents }) => {
   const completed = stats[SurveyStatus.Completed] || 0;
 
   return (
-    <div className="bg-gray-800 p-4 rounded-lg">
-      <h3 className="text-xl font-semibold mb-4 text-cyan-400">Overall Progress</h3>
-      <div className="space-y-3">
-        <div className="flex justify-between items-center">
-          <span className="text-red-400">{SurveyStatus.NotStarted}</span>
-          <span className="font-bold text-lg">{notStarted}</span>
+    <div>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">Dashboard Statistik</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <StatCard title="Total Responden" value={total} colorClass="text-blue-500" total={total}/>
+            <StatCard title={SurveyStatus.NotStarted} value={notStarted} colorClass="text-red-500" total={total}/>
+            <StatCard title={SurveyStatus.InProgress} value={inProgress} colorClass="text-yellow-500" total={total}/>
+            <StatCard title={SurveyStatus.Completed} value={completed} colorClass="text-green-500" total={total}/>
         </div>
-        <div className="flex justify-between items-center">
-          <span className="text-yellow-400">{SurveyStatus.InProgress}</span>
-          <span className="font-bold text-lg">{inProgress}</span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-green-400">{SurveyStatus.Completed}</span>
-          <span className="font-bold text-lg">{completed}</span>
-        </div>
-        <div className="border-t border-gray-700 my-2"></div>
-        <div className="flex justify-between items-center">
-          <span className="text-gray-300 font-bold">Total Respondents</span>
-          <span className="font-bold text-lg">{total}</span>
-        </div>
-      </div>
     </div>
   );
 };

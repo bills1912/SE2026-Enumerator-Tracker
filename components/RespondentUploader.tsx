@@ -97,23 +97,23 @@ const RespondentUploader: React.FC<RespondentUploaderProps> = ({ enumerators, on
 
 
   return (
-    <div className="bg-gray-800 p-4 rounded-lg">
-      <h3 className="text-xl font-semibold mb-4 text-cyan-400">Manage Respondents</h3>
+    <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+      <h3 className="text-xl font-semibold mb-4 text-cyan-600 dark:text-cyan-400">Manage Respondents</h3>
       <div className="space-y-4">
         <div>
-          <label htmlFor="file-upload" className="relative cursor-pointer bg-gray-700 hover:bg-gray-600 rounded-md font-medium text-cyan-400 p-4 flex flex-col items-center justify-center border-2 border-dashed border-gray-600">
-            <UploadIcon className="h-10 w-10 text-gray-500 mb-2"/>
+          <label htmlFor="file-upload" className="relative cursor-pointer bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md font-medium text-cyan-600 dark:text-cyan-400 p-4 flex flex-col items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600">
+            <UploadIcon className="h-10 w-10 text-gray-400 dark:text-gray-500 mb-2"/>
             <span>{isParsing ? 'Parsing...' : 'Upload a file'}</span>
-            <p className="text-xs text-gray-500">XLSX or CSV</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">XLSX or CSV</p>
             <input id="file-upload" name="file-upload" type="file" className="sr-only" onChange={handleFileChange} accept=".xlsx, .csv" disabled={isParsing}/>
           </label>
         </div>
-        <button onClick={handleDownloadTemplate} className="w-full flex items-center justify-center space-x-2 bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+        <button onClick={handleDownloadTemplate} className="w-full flex items-center justify-center space-x-2 bg-gray-600 dark:bg-gray-700 hover:bg-gray-500 dark:hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
             <DownloadIcon className="h-5 w-5"/>
             <span>Download Template</span>
         </button>
         {feedback && (
-          <p className={`text-sm p-2 rounded ${feedback.type === 'success' ? 'bg-green-900 text-green-300' : 'bg-red-900 text-red-300'}`} style={{whiteSpace: 'pre-wrap'}}>{feedback.message}</p>
+          <p className={`text-sm p-2 rounded ${feedback.type === 'success' ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300' : 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-300'}`} style={{whiteSpace: 'pre-wrap'}}>{feedback.message}</p>
         )}
       </div>
     </div>

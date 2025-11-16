@@ -1,8 +1,10 @@
 
+
 import React, { useEffect, useRef } from 'react';
-import L, { LatLngExpression, Map, Marker, Icon } from 'leaflet';
+import L, { LatLngExpression, Map, Marker } from 'leaflet';
 import { User, Respondent, Enumerator, UserRole } from '../types';
 import { STATUS_COLORS } from '../constants';
+import { CrosshairsIcon } from './Icons';
 
 interface MapProps {
   user: User;
@@ -31,6 +33,7 @@ const MapComponent: React.FC<MapProps> = ({ user, respondents, enumerators, curr
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapRef = useRef<Map | null>(null);
   const markersRef = useRef<{ [key: string]: Marker }>({});
+  const isInitialPanDone = useRef(false);
 
   useEffect(() => {
     if (mapContainer.current && !mapRef.current) {
@@ -38,10 +41,15 @@ const MapComponent: React.FC<MapProps> = ({ user, respondents, enumerators, curr
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(mapRef.current);
+      
+      // Initial theme check for map
+      if(document.documentElement.classList.contains('dark')) {
+        mapContainer.current.classList.add('dark');
+      }
     }
   }, []);
   
-  const createCircleMarker = (color: string): Icon => {
+  const createCircleMarker = (color: string): L.DivIcon => {
       return L.divIcon({
           html: `<span style="background-color: ${color}; width: 1rem; height: 1rem; border-radius: 50%; display: block; border: 2px solid white;"></span>`,
           className: 'bg-transparent',
@@ -58,13 +66,18 @@ const MapComponent: React.FC<MapProps> = ({ user, respondents, enumerators, curr
     respondents.forEach(r => {
         const color = STATUS_COLORS[r.status];
         const icon = createCircleMarker(color);
+        let marker: L.Marker;
+
         if (markersRef.current[r.id]) {
-            markersRef.current[r.id].setLatLng(r.location).setIcon(icon);
+            marker = markersRef.current[r.id];
+            marker.setLatLng(r.location).setIcon(icon);
         } else {
-            const marker = L.marker(r.location, { icon }).addTo(map);
-            marker.bindPopup(`<b>${r.name}</b><br/>Status: ${r.status}`);
+            marker = L.marker(r.location, { icon }).addTo(map);
             markersRef.current[r.id] = marker;
         }
+
+        const popupContent = `<b>${r.name}</b><br/>Status: ${r.status}`;
+        marker.bindPopup(popupContent);
     });
     
     // Update enumerator markers if supervisor
@@ -92,12 +105,54 @@ const MapComponent: React.FC<MapProps> = ({ user, respondents, enumerators, curr
             marker.bindPopup("<b>Your Location</b>");
             markersRef.current[userId] = marker;
         }
-        map.panTo(currentUserLocation);
+        // Only pan on the initial location fix
+        if (!isInitialPanDone.current) {
+            map.setView(currentUserLocation, 16);
+            isInitialPanDone.current = true;
+        }
     }
 
   }, [respondents, enumerators, currentUserLocation, user.id, user.role]);
+  
+  // Add class to map container when theme changes
+  useEffect(() => {
+    if (mapContainer.current) {
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === 'class') {
+                    const isDark = (mutation.target as HTMLElement).classList.contains('dark');
+                     if(mapContainer.current) {
+                        mapContainer.current.classList.toggle('dark', isDark);
+                     }
+                }
+            });
+        });
+        observer.observe(document.documentElement, { attributes: true });
+        return () => observer.disconnect();
+    }
+  }, []);
 
-  return <div ref={mapContainer} className="h-full w-full" />;
+  const handleRecenter = () => {
+    if (mapRef.current && currentUserLocation) {
+      mapRef.current.setView(currentUserLocation, 16);
+    }
+  };
+
+  return (
+    <div className="h-full w-full relative">
+        <div ref={mapContainer} className="h-full w-full leaflet-container" />
+        {user.role === UserRole.Enumerator && currentUserLocation && (
+            <button
+            onClick={handleRecenter}
+            className="absolute top-4 left-4 z-[1000] bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-md p-2 shadow-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700"
+            aria-label="Recenter map on your location"
+            title="Recenter map"
+            >
+            <CrosshairsIcon className="h-5 w-5" />
+            </button>
+        )}
+    </div>
+  );
 };
 
 export default MapComponent;

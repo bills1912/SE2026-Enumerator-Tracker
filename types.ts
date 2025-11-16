@@ -1,4 +1,3 @@
-
 import { LatLngExpression } from 'leaflet';
 
 export enum UserRole {
@@ -39,6 +38,8 @@ export interface Enumerator extends User {
 }
 
 export interface ChatMessage {
-  role: 'user' | 'model';
+  role: 'user' | 'model' | 'supervisor';
   content: string;
 }
+
+export type ChatMode = 'ai' | 'supervisor';
