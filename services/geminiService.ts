@@ -5,8 +5,10 @@ const getApiKey = () => {
   // 1. Try Vite / Modern browsers (import.meta.env)
   // We cast to 'any' to avoid TypeScript errors if 'vite/client' types aren't loaded
   try {
-    if (import.meta && (import.meta as any).env && (import.meta as any).env.API_KEY) {
-      return (import.meta as any).env.API_KEY;
+    // @ts-ignore
+    if (import.meta && import.meta.env && import.meta.env.API_KEY) {
+      // @ts-ignore
+      return import.meta.env.API_KEY;
     }
   } catch (e) {
     // Ignore errors if import.meta is not available
