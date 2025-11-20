@@ -9,6 +9,7 @@ export enum SurveyStatus {
   NotStarted = 'Not Yet Surveyed',
   InProgress = 'Currently Being Surveyed',
   Completed = 'Successfully Surveyed',
+  Reviewed = 'Reviewed',
 }
 
 export interface User {
@@ -43,3 +44,22 @@ export interface ChatMessage {
 }
 
 export type ChatMode = 'ai' | 'supervisor';
+
+export enum NotificationType {
+  Proximity = 'Proximity',
+  Completion = 'Completion',
+  Issue = 'Issue',
+  SupervisorReply = 'Supervisor Reply',
+  SystemUpdate = 'System Update',
+}
+
+export interface Notification {
+  id: string;
+  type: NotificationType;
+  message: string;
+  timestamp: Date;
+  isRead: boolean;
+  recipientId: string;
+  senderName?: string;
+  relatedRespondentId?: string;
+}

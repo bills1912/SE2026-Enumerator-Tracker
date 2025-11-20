@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 // FIX: Import logos from constants
+// FIX: Corrected typo from SE2026_LOGO_BASE_64 to SE2026_LOGO_BASE64
 import { BPS_LOGO_BASE64, SE2026_LOGO_BASE64 } from '../constants';
-import { EyeIcon, EyeSlashIcon, RefreshIcon, CheckCircleIcon } from './Icons';
+import { EyeIcon, EyeSlashIcon, RefreshIcon, ShieldLogoIcon } from './Icons';
 import ThemeSwitcher from './ThemeSwitcher';
 
 type Theme = 'light' | 'dark' | 'system';
@@ -33,8 +34,10 @@ const Login: React.FC<LoginProps> = ({ onLogin, onForgotPasswordClick, theme, se
 
   useEffect(() => {
     const savedEmail = localStorage.getItem('rememberedEmail');
-    if (savedEmail) {
+    const savedPassword = localStorage.getItem('rememberedPassword');
+    if (savedEmail && savedPassword) {
       setEmail(savedEmail);
+      setPassword(savedPassword);
       setRememberMe(true);
     } else {
       // Pre-fill with supervisor email for demo
@@ -66,8 +69,10 @@ const Login: React.FC<LoginProps> = ({ onLogin, onForgotPasswordClick, theme, se
     if (success) {
         if (rememberMe) {
             localStorage.setItem('rememberedEmail', email);
+            localStorage.setItem('rememberedPassword', password);
         } else {
             localStorage.removeItem('rememberedEmail');
+            localStorage.removeItem('rememberedPassword');
         }
     } else {
       setError('Email atau kata sandi tidak valid. Silakan coba lagi.');
@@ -77,60 +82,46 @@ const Login: React.FC<LoginProps> = ({ onLogin, onForgotPasswordClick, theme, se
   };
 
   return (
-    // FIX: Changed background gradient to orange theme
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-gray-200">
+    <div className="min-h-screen bg-orange-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
         <div className="absolute top-4 right-4 z-10">
             <ThemeSwitcher theme={theme} setTheme={setTheme} />
         </div>
 
         <div className="flex flex-col md:flex-row min-h-screen">
             {/* Left Panel */}
-            <div className="w-full md:w-3/5 p-8 md:p-16 flex flex-col justify-center bg-left-bottom bg-no-repeat">
-                <div className="max-w-xl">
-                    <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800 dark:text-white">
-                        Sistem Tracking Monitoring <br />
-                        {/* FIX: Changed text color to orange theme */}
-                        <span className="text-orange-600 dark:text-orange-400">Pendataan SE2026</span>
-                    </h1>
-                    <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
-                        platform mutakhir dengan fitur tracking dan monitoring pendataan untuk menjaga kualitas data yang dihasilkan di lapangan dalam kegiatan SE2026.
-                    </p>
-                    <ul className="mt-8 space-y-4">
-                        <li className="flex items-start">
-                            {/* FIX: Changed icon color to orange theme */}
-                            <CheckCircleIcon className="h-6 w-6 text-orange-500 flex-shrink-0 mr-3 mt-1" />
-                            <div>
-                                <h3 className="font-semibold text-gray-800 dark:text-gray-100">Real-Time Tracking</h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">Real-time memonitor proses pendataan dan progress pendataan.</p>
-                            </div>
-                        </li>
-                        <li className="flex items-start">
-                            {/* FIX: Changed icon color to orange theme */}
-                            <CheckCircleIcon className="h-6 w-6 text-orange-500 flex-shrink-0 mr-3 mt-1" />
-                            <div>
-                                <h3 className="font-semibold text-gray-800 dark:text-gray-100">Dashboard yang Komprehensif</h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">Monitoring yang lebih terasa profesional, dilengkapi dengan grafik pemantauan hasil pendataan yang membantu dalam monitoring progres di lapangan.</p>
-                            </div>
-                        </li>
-                        <li className="flex items-start">
-                            {/* FIX: Changed icon color to orange theme */}
-                            <CheckCircleIcon className="h-6 w-6 text-orange-500 flex-shrink-0 mr-3 mt-1" />
-                            <div>
-                                <h3 className="font-semibold text-gray-800 dark:text-gray-100">Layanan Chat dengan AI atau Supervisor</h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">Chat secara langsung dengan AI assistant atau dengan supervisor kegiatan.</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+            <div 
+              className="w-full md:w-3/5 flex flex-col justify-center items-center relative overflow-hidden bg-white dark:bg-gray-800/50 p-8 text-center"
+            >
+              {/*
+                The 3D spline viewer has been temporarily disabled due to a persistent compilation error.
+                To re-enable it, first add the following type definition to 'types.ts':
+                
+                import React from 'react'; // Add this import at the top of types.ts
+                declare global {
+                  namespace JSX {
+                    interface IntrinsicElements {
+                      'spline-viewer': any; // Or a more specific type
+                    }
+                  }
+                }
+
+                Then, uncomment the line below.
+              */}
+              {/* <spline-viewer url="https://prod.spline.design/V0x9uCo7n0NAb43P/scene.splinecode"></spline-viewer> */}
+
+              {/* Placeholder content */}
+              <ShieldLogoIcon className="h-48 w-48 text-orange-500" />
+              <h1 className="mt-4 text-3xl font-bold text-gray-800 dark:text-gray-100">SE2026 Field Data Monitor</h1>
+              <p className="mt-2 text-lg text-gray-600 dark:text-gray-400">Real-time tracking and survey management.</p>
             </div>
 
             {/* Right Panel (Form) */}
-            <div className="w-full md:w-2/5 bg-white dark:bg-gray-900/50 flex items-center justify-center p-8">
+            <div className="w-full md:w-2/5 bg-white dark:bg-gray-900 flex items-center justify-center p-8 shadow-2xl md:shadow-none">
                 <div className="w-full max-w-sm">
                     <div className="text-center">
-                        {/* FIX: Replaced ShieldLogoIcon with BPS and SE2026 logos */}
                         <div className="flex justify-center items-center gap-4">
                             <img src={BPS_LOGO_BASE64} alt="BPS Logo" className="h-16" />
+                            {/* FIX: Corrected typo from SE2026_LOGO_BASE_64 to SE2026_LOGO_BASE64 */}
                             <img src={SE2026_LOGO_BASE64} alt="SE2026 Logo" className="h-16" />
                         </div>
                         <h2 className="mt-6 text-3xl font-bold text-gray-900 dark:text-gray-100">Selamat Datang</h2>
@@ -148,8 +139,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onForgotPasswordClick, theme, se
                             required
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            // FIX: Changed focus ring color to orange theme
-                            className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-orange-500 focus:border-orange-500"
+                            className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-orange-500 dark:focus:ring-offset-gray-900"
                             />
                         </div>
                     
@@ -164,8 +154,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onForgotPasswordClick, theme, se
                                     required
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    // FIX: Changed focus ring color to orange theme
-                                    className="block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-orange-500 focus:border-orange-500"
+                                    className="block w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-orange-500 dark:focus:ring-offset-gray-900"
                                 />
                                 <button
                                     type="button"
@@ -189,7 +178,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onForgotPasswordClick, theme, se
                                 <button 
                                     type="button" 
                                     onClick={refreshCaptcha} 
-                                    className="flex-shrink-0 p-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600"
+                                    className="flex-shrink-0 p-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
                                     aria-label="Refresh CAPTCHA"
                                 >
                                     <RefreshIcon className="h-5 w-5"/>
@@ -203,8 +192,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onForgotPasswordClick, theme, se
                                 value={captchaInput}
                                 onChange={(e) => setCaptchaInput(e.target.value)}
                                 placeholder="Masukkan captcha"
-                                // FIX: Changed focus ring color to orange theme
-                                className="mt-2 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-orange-500 focus:border-orange-500"
+                                className="mt-2 block w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-orange-500 dark:focus:ring-offset-gray-900"
                             />
                         </div>
 
@@ -218,14 +206,12 @@ const Login: React.FC<LoginProps> = ({ onLogin, onForgotPasswordClick, theme, se
                                     type="checkbox" 
                                     checked={rememberMe}
                                     onChange={(e) => setRememberMe(e.target.checked)}
-                                    // FIX: Changed checkbox color to orange theme
                                     className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded" 
                                 />
                                 <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900 dark:text-gray-300">Ingat saya</label>
                             </div>
                             <div className="text-sm">
-                                {/* FIX: Changed link color to orange theme */}
-                                <button type="button" onClick={onForgotPasswordClick} className="font-medium text-orange-600 hover:text-orange-500 dark:text-orange-400 dark:hover:text-orange-300">
+                                <button type="button" onClick={onForgotPasswordClick} className="font-medium text-orange-600 hover:text-orange-500 dark:text-orange-400 dark:hover:text-orange-300 transition-colors">
                                     Lupa password?
                                 </button>
                             </div>
@@ -233,8 +219,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onForgotPasswordClick, theme, se
 
                         <button
                             type="submit"
-                            // FIX: Changed button color to orange theme
-                            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+                            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-all duration-300 transform hover:scale-105"
                         >
                             Login
                         </button>

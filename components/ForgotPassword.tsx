@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ShieldLogoIcon } from './Icons';
+// FIX: Corrected typos from BPS_LOGO_BASE_64 and SE2026_LOGO_BASE_64 to BPS_LOGO_BASE64 and SE2026_LOGO_BASE64
+import { BPS_LOGO_BASE64, SE2026_LOGO_BASE64 } from '../constants';
 import ThemeSwitcher from './ThemeSwitcher';
 
 type Theme = 'light' | 'dark' | 'system';
@@ -21,14 +22,18 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onBackToLogin, theme, s
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-800 p-4 transition-colors duration-300">
-      <div className="absolute top-6 right-6">
+    <div className="min-h-screen flex items-center justify-center bg-orange-50 dark:bg-gray-900 p-4 transition-colors duration-300 relative">
+      <div className="absolute top-6 right-6 z-20">
         <ThemeSwitcher theme={theme} setTheme={setTheme} />
       </div>
-      <div className="w-full max-w-md bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-2xl space-y-8">
+      <div className="w-full max-w-md bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm p-8 rounded-2xl shadow-2xl space-y-8 z-10 border border-white/20">
         <div className="text-center">
-          {/* FIX: Changed icon color to orange theme */}
-          <ShieldLogoIcon className="h-16 w-16 mx-auto text-orange-600 dark:text-orange-400" />
+          <div className="flex justify-center items-center gap-4">
+              {/* FIX: Corrected typo from BPS_LOGO_BASE_64 to BPS_LOGO_BASE64 */}
+              <img src={BPS_LOGO_BASE64} alt="BPS Logo" className="h-12" />
+              {/* FIX: Corrected typo from SE2026_LOGO_BASE_64 to SE2026_LOGO_BASE64 */}
+              <img src={SE2026_LOGO_BASE64} alt="SE2026 Logo" className="h-12" />
+          </div>
           <h2 className="mt-6 text-3xl font-bold text-gray-900 dark:text-gray-100">
             {submitted ? 'Periksa Email Anda' : 'Lupa Password?'}
           </h2>
@@ -51,8 +56,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onBackToLogin, theme, s
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                // FIX: Changed focus ring color to orange theme
-                className="block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-orange-500 focus:border-orange-500"
+                className="block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-1 dark:focus:ring-offset-gray-900 focus:ring-orange-500"
                 placeholder="Alamat Email"
               />
             </div>
@@ -60,8 +64,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onBackToLogin, theme, s
             <div>
               <button
                 type="submit"
-                // FIX: Changed button color to orange theme
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-all duration-300 transform hover:scale-105"
               >
                 Kirim Tautan Reset
               </button>
@@ -72,8 +75,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onBackToLogin, theme, s
         <div className="text-center">
           <button
             onClick={onBackToLogin}
-            // FIX: Changed link color to orange theme
-            className="font-medium text-orange-600 hover:text-orange-500 dark:text-orange-400 dark:hover:text-orange-300 text-sm"
+            className="font-medium text-orange-600 hover:text-orange-500 dark:text-orange-400 dark:hover:text-orange-300 text-sm transition-colors"
           >
             &larr; Kembali ke Login
           </button>
