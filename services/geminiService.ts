@@ -2,12 +2,17 @@ import { GoogleGenAI } from "@google/genai";
 
 // Helper to safely get API Key from different environment configurations
 const getApiKey = () => {
-  // 1. Try Vite / Modern browsers
-  if (typeof import.meta !== 'undefined' && (import.meta as any).env && (import.meta as any).env.API_KEY) {
-    return (import.meta as any).env.API_KEY;
+  // 1. Try Vite / Modern browsers (import.meta.env)
+  // We cast to 'any' to avoid TypeScript errors if 'vite/client' types aren't loaded
+  try {
+    if (import.meta && (import.meta as any).env && (import.meta as any).env.API_KEY) {
+      return (import.meta as any).env.API_KEY;
+    }
+  } catch (e) {
+    // Ignore errors if import.meta is not available
   }
   
-  // 2. Try Node / Webpack (safely)
+  // 2. Try Node / Webpack (process.env)
   try {
     // Check if process is defined to avoid ReferenceError in browsers
     if (typeof process !== 'undefined' && process.env && process.env.API_KEY) {
