@@ -1,24 +1,28 @@
-
 import { GoogleGenAI } from "@google/genai";
 
 // Helper to safely get API Key from different environment configurations
 const getApiKey = () => {
+  // 1. Try Vite / Modern browsers
+  if (typeof import.meta !== 'undefined' && (import.meta as any).env && (import.meta as any).env.API_KEY) {
+    return (import.meta as any).env.API_KEY;
+  }
+  
+  // 2. Try Node / Webpack (safely)
   try {
-    // Check if process is defined (Node/Webpack/Vite define)
+    // Check if process is defined to avoid ReferenceError in browsers
     if (typeof process !== 'undefined' && process.env && process.env.API_KEY) {
       return process.env.API_KEY;
     }
   } catch (e) {
-    // Ignore error
+    // Ignore error if process is not defined
   }
+  
   return undefined;
 };
 
 const API_KEY = getApiKey();
 
 if (!API_KEY) {
-  // In a real app, you'd want to handle this more gracefully.
-  // For this example, we'll throw an error if the key is missing.
   console.error("API_KEY environment variable not set. Please check your .env file and vite.config.ts");
 }
 
@@ -42,7 +46,7 @@ export async function getChatbotResponse(prompt: string): Promise<string> {
         systemInstruction: SYSTEM_INSTRUCTION,
       },
     });
-    return response.text;
+    return response.text ?? "";
   } catch (error) {
     console.error("Error fetching response from Gemini API:", error);
     return "Sorry, I encountered an error. Please try again.";
